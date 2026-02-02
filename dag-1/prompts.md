@@ -1,5 +1,3 @@
-# vibe-coding-deep-dive
-
 # prompt 1
 Maak een eenvoudige webpagina met mijn naam 'Jan Jansen' groot bovenaan, daaronder mijn leeftijd '17 jaar', en onderaan mijn woonplaats 'Amsterdam'. Alles gecentreerd op een witte achtergrond. Gebruik alleen HTML en CSS.
 
