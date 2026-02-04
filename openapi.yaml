@@ -1,0 +1,679 @@
+openapi: 3.0.3
+info:
+  title: Bibliotheek API
+  version: 1.0.0
+  description: |
+    REST API voor een bibliotheek, gebaseerd op de Python FastAPI-implementatie
+    in de map `python-api`.
+servers:
+  - url: http://localhost:8000
+    description: Lokale ontwikkelserver (FastAPI `uvicorn main:app --reload`)
+
+paths:
+  /boeken:
+    get:
+      summary: Lijst van boeken ophalen
+      operationId: listBoeken
+      parameters:
+        - in: query
+          name: titel
+          schema:
+            type: string
+          required: false
+          description: Filter op (deel van) de titel (case-insensitive).
+        - in: query
+          name: genre
+          schema:
+            type: string
+          required: false
+          description: Filter op exact genre (case-insensitive).
+        - in: query
+          name: jaar
+          schema:
+            type: integer
+          required: false
+          description: Filter op publicatiejaar.
+      responses:
+        "200":
+          description: Lijst van boeken.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Boek"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    post:
+      summary: Nieuw boek aanmaken
+      operationId: createBoek
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BoekCreate"
+      responses:
+        "201":
+          description: Boek aangemaakt.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Boek"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /boeken/{boek_id}:
+    parameters:
+      - in: path
+        name: boek_id
+        required: true
+        schema:
+          type: integer
+        description: Unieke ID van het boek.
+    get:
+      summary: Eén boek ophalen
+      operationId: getBoek
+      responses:
+        "200":
+          description: Boek gevonden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Boek"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    patch:
+      summary: Boek gedeeltelijk bijwerken
+      operationId: updateBoek
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BoekUpdate"
+      responses:
+        "200":
+          description: Boek bijgewerkt.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Boek"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    delete:
+      summary: Boek verwijderen
+      operationId: deleteBoek
+      responses:
+        "204":
+          description: Boek succesvol verwijderd, geen response body.
+        "400":
+          description: Boek kan niet verwijderd worden (bijv. nog actieve uitleningen).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /leden:
+    get:
+      summary: Lijst van leden ophalen
+      operationId: listLeden
+      responses:
+        "200":
+          description: Lijst van leden.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lid"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    post:
+      summary: Nieuw lid aanmaken
+      operationId: createLid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LidCreate"
+      responses:
+        "201":
+          description: Lid aangemaakt.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lid"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /leden/{lid_id}:
+    parameters:
+      - in: path
+        name: lid_id
+        required: true
+        schema:
+          type: integer
+        description: Unieke ID van het lid.
+    get:
+      summary: Eén lid ophalen
+      operationId: getLid
+      responses:
+        "200":
+          description: Lid gevonden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lid"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    patch:
+      summary: Lid gedeeltelijk bijwerken
+      operationId: updateLid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LidUpdate"
+      responses:
+        "200":
+          description: Lid bijgewerkt.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lid"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    delete:
+      summary: Lid verwijderen
+      operationId: deleteLid
+      responses:
+        "204":
+          description: Lid succesvol verwijderd, geen response body.
+        "400":
+          description: Lid kan niet verwijderd worden (actieve uitleningen of openstaande boetes).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /uitleningen:
+    get:
+      summary: Lijst van uitleningen ophalen
+      operationId: listUitleningen
+      parameters:
+        - in: query
+          name: lid_ID
+          required: false
+          schema:
+            type: integer
+          description: Filter op lid-ID.
+        - in: query
+          name: actief
+          required: false
+          schema:
+            type: boolean
+          description: Als `true`, alleen nog niet teruggebrachte uitleningen.
+      responses:
+        "200":
+          description: Lijst van uitleningen.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Uitlening"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    post:
+      summary: Nieuw uitlening aanmaken (boek lenen)
+      operationId: createUitlening
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UitleningCreate"
+      responses:
+        "201":
+          description: Uitlening aangemaakt.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Uitlening"
+        "400":
+          description: Business rule overtreden (bijv. geen exemplaren meer beschikbaar).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /uitleningen/{uitlening_id}:
+    parameters:
+      - in: path
+        name: uitlening_id
+        required: true
+        schema:
+          type: integer
+        description: Unieke ID van de uitlening.
+    get:
+      summary: Eén uitlening ophalen
+      operationId: getUitlening
+      responses:
+        "200":
+          description: Uitlening gevonden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Uitlening"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /uitleningen/{uitlening_id}/return:
+    parameters:
+      - in: path
+        name: uitlening_id
+        required: true
+        schema:
+          type: integer
+    post:
+      summary: Boek terugbrengen
+      operationId: returnBoek
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReturnRequest"
+      responses:
+        "200":
+          description: Uitlening bijgewerkt; boek is teruggebracht. Eventuele boete wordt automatisch aangemaakt.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Uitlening"
+        "400":
+          description: Uitlening is al teruggebracht.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /boetes:
+    get:
+      summary: Lijst van boetes ophalen
+      operationId: listBoetes
+      parameters:
+        - in: query
+          name: lid_ID
+          required: false
+          schema:
+            type: integer
+          description: Filter op lid-ID.
+        - in: query
+          name: open
+          required: false
+          schema:
+            type: boolean
+          description: Als `true`, alleen niet-betaalde boetes.
+      responses:
+        "200":
+          description: Lijst van boetes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Boete"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /boetes/{boete_id}:
+    parameters:
+      - in: path
+        name: boete_id
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Eén boete ophalen
+      operationId: getBoete
+      responses:
+        "200":
+          description: Boete gevonden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Boete"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /boetes/{boete_id}/pay:
+    parameters:
+      - in: path
+        name: boete_id
+        required: true
+        schema:
+          type: integer
+    post:
+      summary: Boete betalen
+      operationId: payBoete
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BoetePayRequest"
+      responses:
+        "200":
+          description: Boete als betaald gemarkeerd.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Boete"
+        "400":
+          description: Boete is al betaald.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntity"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+components:
+  schemas:
+    Boek:
+      type: object
+      properties:
+        boek_ID:
+          type: integer
+          example: 1
+        titel:
+          type: string
+          example: De Ontdekking
+        jaar:
+          type: integer
+          example: 2020
+        genre:
+          type: string
+          example: Roman
+        exemplaren:
+          type: integer
+          example: 3
+      required:
+        - boek_ID
+        - titel
+        - jaar
+        - genre
+        - exemplaren
+
+    BoekCreate:
+      type: object
+      properties:
+        titel:
+          type: string
+        jaar:
+          type: integer
+        genre:
+          type: string
+        exemplaren:
+          type: integer
+      required:
+        - titel
+        - jaar
+        - genre
+        - exemplaren
+
+    BoekUpdate:
+      type: object
+      properties:
+        titel:
+          type: string
+        jaar:
+          type: integer
+        genre:
+          type: string
+        exemplaren:
+          type: integer
+
+    Lid:
+      type: object
+      properties:
+        lid_ID:
+          type: integer
+          example: 10
+        naam:
+          type: string
+          example: Jan Jansen
+        adres:
+          type: string
+          example: Straat 1, Stad
+        geboortedatum:
+          type: string
+          format: date
+          example: 1990-01-01
+        email:
+          type: string
+          format: email
+          example: jan@example.com
+      required:
+        - lid_ID
+        - naam
+        - adres
+        - geboortedatum
+        - email
+
+    LidCreate:
+      type: object
+      properties:
+        naam:
+          type: string
+        adres:
+          type: string
+        geboortedatum:
+          type: string
+          format: date
+        email:
+          type: string
+          format: email
+      required:
+        - naam
+        - adres
+        - geboortedatum
+        - email
+
+    LidUpdate:
+      type: object
+      properties:
+        naam:
+          type: string
+        adres:
+          type: string
+        geboortedatum:
+          type: string
+          format: date
+        email:
+          type: string
+          format: email
+
+    Uitlening:
+      type: object
+      properties:
+        uitlening_ID:
+          type: integer
+          example: 100
+        boek_ID:
+          type: integer
+          example: 1
+        lid_ID:
+          type: integer
+          example: 10
+        uitleendatum:
+          type: string
+          format: date
+          example: 2026-02-03
+        terugbrengdatum:
+          type: string
+          format: date
+          nullable: true
+          example: 2026-02-10
+      required:
+        - uitlening_ID
+        - boek_ID
+        - lid_ID
+        - uitleendatum
+
+    UitleningCreate:
+      type: object
+      properties:
+        boek_ID:
+          type: integer
+        lid_ID:
+          type: integer
+        uitleendatum:
+          type: string
+          format: date
+      required:
+        - boek_ID
+        - lid_ID
+        - uitleendatum
+
+    Boete:
+      type: object
+      properties:
+        boete_ID:
+          type: integer
+          example: 5
+        bedrag:
+          type: number
+          format: float
+          example: 3.5
+        reden:
+          type: string
+          example: Te laat inleveren (17 dagen)
+        lid_ID:
+          type: integer
+          example: 10
+        betaaldatum:
+          type: string
+          format: date
+          nullable: true
+          example: 2026-02-20
+      required:
+        - boete_ID
+        - bedrag
+        - reden
+        - lid_ID
+
+    BoetePayRequest:
+      type: object
+      properties:
+        betaaldatum:
+          type: string
+          format: date
+          nullable: true
+          description: >
+            Datum waarop de boete is betaald. Als niet opgegeven, gebruikt de
+            server de huidige datum.
+
+    ReturnRequest:
+      type: object
+      properties:
+        terugbrengdatum:
+          type: string
+          format: date
+          nullable: true
+          description: >
+            Datum waarop het boek is teruggebracht. Als niet opgegeven, gebruikt
+            de server de huidige datum.
+
+    Error:
+      type: object
+      properties:
+        detail:
+          description: Beschrijving van de fout.
+          oneOf:
+            - type: string
+            - type: object
+            - type: array
+              items:
+                type: object
+      required:
+        - detail
+
+  responses:
+    BadRequest:
+      description: Ongeldige aanvraag of business rule overtreden.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotFound:
+      description: Het gevraagde object is niet gevonden.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    UnprocessableEntity:
+      description: Validatiefout op request body of parameters.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    InternalServerError:
+      description: Onverwachte serverfout.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+

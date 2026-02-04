@@ -13,3 +13,5 @@ wat elke file doet
 
 Zou je deze code zelf durven aanpassen?
 mischien
+
+Wanneer is een CLI-tool beter dan IDE of browser?
