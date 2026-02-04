@@ -123,24 +123,30 @@ PlantsVsMiku's/
 
 ## 5. Development Roadmap (Fases)
 
-### Fase 1: Foundation (Week 1)
+### Fase 1: Foundation (Wednesday Morning)
 - Phaser setup & basic scene structure
 - Menu scene (index.html)
 - Game scene skeleton
+- Basic styling (main.css, menu.css)
 
-### Fase 2: Core Gameplay (Week 2)
+### Fase 2: Core Gameplay (Wednesday Afternoon - Thursday Morning)
 - Grid system en placement mechanic
 - Plant & Miku entity classes
 - Basic combat system
+- ResourceManager implementation
+- Level 1 & 2 creation
 
-### Fase 3: Systems (Week 3)
-- Resource management system
-- 3 levels met progressive difficulty
-- Win/lose conditions
+### Fase 3: Systems & Content (Thursday Afternoon)
+- Levels 3, 4, 5 met progressive difficulty
+- Win/lose conditions & game flow
+- Settings menu (settings.html)
+- HUD & UI improvements
+- Audio integration (basic sound effects)
+- Testing & balancing
 
-### Fase 4: Polish & Content (Week 4)
-- Levels 4-5 + balancing
-- Settings menu
-- Audio integration
-- UI improvements
-- Testing & bug fixes
+### Fase 4: Presentation Ready (Friday)
+- Bug fixes & polish
+- Final testing & playtesting
+- Documentation & code cleanup
+- Prepare presentation materials
+- Demo preparation
