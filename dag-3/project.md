@@ -38,7 +38,7 @@ leerlingen van het voortgezet onderwijs met interesse in games en muziek
 
 ---
 
-## Out of Scope (Future Releases)
+## Out of Scope
 
 ### Extended Content
 - Multiple game modes (campaign, survival, multiplayer)
