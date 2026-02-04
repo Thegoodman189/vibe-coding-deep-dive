@@ -12,3 +12,8 @@ formaat:
 Als [gebruiker] wil ik [actie] zodat [waarde]*
 
 ## opdracht 3
+
+
+## opdracht 4
+maak voor mij een mind map voor PlantsVsMiku's PlantsVsMiku’s is bedoeld voor tieners die houden van muziek en games en een snel te begrijpen, maar strategisch spel willen spelen in de browser.
+maak voor mij een API-flow voor deze mindmap
