@@ -16,7 +16,7 @@ Als **speler** wil ik een nieuw spel kunnen starten zodat ik een level kan spele
 ## Story 2: Select and Place Characters
 **Prioriteit:** Must
 
-Als **speler** wil ik mijn plants en Miku's op het speelveld kunnen plaatsen zodat ik mijn strategie kan uitvoeren.
+Als **speler** wil ik mijn plants op het speelveld kunnen plaatsen zodat ik mijn strategie kan uitvoeren.
 
 **Acceptatiecriteria:**
 - Ik kan beschikbare characters selecteren uit een roster
