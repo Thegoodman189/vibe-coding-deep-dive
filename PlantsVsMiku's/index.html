@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/mainmenu.css">
+    <title>Mainmenu</title>
+</head>
+
+<body>
+    <img id="main-menu-logo" src="img/PlantsVsMiku's-logo.png" alt="plants vs miku logo">
+    <img id="main-menu-background" src="img/main-menu-background.png" alt="background with plants and miku">
+
+    <section>
+        <button id="play-btn">Play</button>
+        <button id="options-btn">Options</button>
+        <button id="quit-btn">Quit</button>
+    </section>
+
+    <!-- Options modal (hidden by default) -->
+    <div id="options-modal" class="modal" aria-hidden="true">
+        <div class="modal-overlay" id="modal-overlay"></div>
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <button class="modal-close" id="modal-close" aria-label="Close options">×</button>
+            <h2 id="modal-title">Options</h2>
+            <label for="volume">Volume: <input type="range" id="volume" min="0" max="100" value="80"></label>
+            <label><input type="checkbox" id="mute"> Mute</label>
+            <div style="margin-top:12px; text-align:right;">
+                <button id="save-options">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/index.js"></script>
+</body>
+
+</html>

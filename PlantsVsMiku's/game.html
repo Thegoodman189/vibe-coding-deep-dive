@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/game.css">
+    <title>Game</title>
+</head>
+<body>
+    <div id="game-container">
+        <!-- Section 1: Left black margin (18.4%) -->
+        <div id="left-margin" class="layout-section"></div>
+
+        <!-- Section 2: Main playfield (51.3%) -->
+        <div id="playfield" class="layout-section">
+            <img id="game-ground" src="img/game-background.png" alt="Game background with plants and miku">
+            <canvas id="game-canvas"></canvas>
+            <!-- Start overlay -->
+            <div id="start-overlay" class="overlay-panel">
+                <div id="start-content">
+                    <h2>Plants vs Miku</h2>
+                    <p>Defend your house from Miku zombies!</p>
+                    <p>plant plants the left side is your house and the right side is where the zombies come from.</p>
+                    <p>grab suns and place plants to defend your house!</p>
+                    <button id="start-btn" class="action-btn">START GAME</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Black divider (0.6%) -->
+        <div id="divider" class="layout-section"></div>
+
+        <!-- Section 4: Right UI panel (29.6%) -->
+        <div id="right-panel" class="layout-section">
+            <div id="panel-content">
+                <h3>Level Progress</h3>
+                <div id="level-info">
+                    Level: <span id="level-display">1/5</span>
+                </div>
+
+                <h3>Wave Progress</h3>
+                <div id="wave-info">
+                    Wave: <span id="wave-number">1</span>/<span id="wave-total">3</span>
+                </div>
+                <div id="zombie-info">
+                    Zombies: <span id="zombie-spawned">0</span>/<span id="zombie-total">30</span>
+                </div>
+
+                <h3>Seed Packets</h3>
+                <div id="seed-packets">
+                    <button class="plant-btn" data-type="shooter">Shooter<br>(100 sun)</button>
+                    <button class="plant-btn" data-type="wall">Wall<br>(50 sun)</button>
+                    <button class="plant-btn" data-type="sunflower">Sunflower<br>(50 sun)</button>
+                </div>
+
+                <h3>Sun</h3>
+                <div id="sun-display"><span id="sun-count">150</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/game.js"></script>
+</body>
+</html>
