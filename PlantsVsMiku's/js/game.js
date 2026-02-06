@@ -76,6 +76,11 @@ const PROJECTILE_IMAGE = new Image();
 PROJECTILE_IMAGE.src = 'sprite/leek-projectile.png';
 PROJECTILE_IMAGE.onerror = () => console.warn('Failed to load projectile image: sprite/leek-projectile.png');
 
+// Load trophy image
+const TROPHY_IMAGE = new Image();
+TROPHY_IMAGE.src = 'sprite/trophy.png';
+TROPHY_IMAGE.onerror = () => console.warn('Failed to load trophy image: sprite/trophy.png');
+
 Plant.TYPES = {
     shooter: { health: 100, cost: 100, damage: 20, cooldown: 1.2, spriteImage: PLANT_IMAGES.shooter },
     wall: { health: 300, cost: 50, damage: 0, cooldown: 1.0, spriteImage: PLANT_IMAGES.wall },
@@ -85,7 +90,7 @@ Plant.TYPES = {
 class Projectile {
     constructor(x, y, speed, damage, row) { this.x = x; this.y = y; this.vx = speed; this.damage = damage; this.row = row; this.radius = 6; this.dead = false; }
     update(dt, game) { this.x += this.vx * dt; if (this.x > game.width + 50) this.dead = true; }
-    draw(ctx) { 
+    draw(ctx) {
         if (PROJECTILE_IMAGE && PROJECTILE_IMAGE.complete && PROJECTILE_IMAGE.naturalWidth) {
             ctx.drawImage(PROJECTILE_IMAGE, this.x - 12, this.y - 12, 24, 24);
         } else {
@@ -121,7 +126,7 @@ class MikuZombie {
 
     update(dt, game) {
         if (this.dead) return;
-        
+
         // find column index relative to grid
         const col = Math.floor((this.x - this.grid.offsetX) / this.grid.cellW);
         const aheadCol = Math.max(0, col);
@@ -148,7 +153,7 @@ class MikuZombie {
         const cellW = this.grid.cellW;
         const cellH = this.grid.cellH;
         const pos = this.grid.cellToCoord(this.row, Math.min(this.grid.cols - 1, Math.floor((this.x - this.grid.offsetX) / cellW)));
-        
+
         // Draw sprite if loaded successfully, otherwise fallback to colored rect.
         // If this sprite failed, try using the normalmiku image as a fallback.
         let drawImg = null;
@@ -165,7 +170,7 @@ class MikuZombie {
             ctx.fillStyle = '#9c27b0';
             ctx.fillRect(this.x - cellW / 2, pos.y - cellH * 0.3, cellW, cellH);
         }
-        
+
         // Draw health bar
         ctx.fillStyle = '#000';
         ctx.font = '10px sans-serif';
@@ -182,7 +187,6 @@ const SPRITE_IMAGES = {
     toastermiku: new Image()
 };
 
-// Try primary path under spriteSheets, fall back to sprite/ if load fails
 function tryLoad(img, primaryPath, fallbackPath, name) {
     img.src = primaryPath;
     img.onerror = () => {
@@ -192,11 +196,11 @@ function tryLoad(img, primaryPath, fallbackPath, name) {
     };
 }
 
-tryLoad(SPRITE_IMAGES.gothmiku, 'spriteSheets/goth-miku.png', 'sprite/goth-miku.png', 'gothmiku');
-tryLoad(SPRITE_IMAGES.lowpoly, 'spriteSheets/fast-miku.png', 'sprite/fast-miku.png', 'lowpoly');
-tryLoad(SPRITE_IMAGES.normalmiku, 'spriteSheets/main-miku.png', 'sprite/main-miku.png', 'normalmiku');
-tryLoad(SPRITE_IMAGES.retardedmiku, 'spriteSheets/inverted-miku.png', 'sprite/inverted-miku.png', 'retardedmiku');
-tryLoad(SPRITE_IMAGES.toastermiku, 'spriteSheets/toaster-miku.png', 'sprite/toaster-miku.png', 'toastermiku');
+tryLoad(SPRITE_IMAGES.gothmiku, 'sprite/goth-miku.png', 'gothmiku');
+tryLoad(SPRITE_IMAGES.lowpoly, 'sprite/fast-miku.png', 'lowpoly');
+tryLoad(SPRITE_IMAGES.normalmiku, 'sprite/main-miku.png', 'normalmiku');
+tryLoad(SPRITE_IMAGES.retardedmiku, 'sprite/inverted-miku.png', 'retardedmiku');
+tryLoad(SPRITE_IMAGES.toastermiku, 'sprite/toaster-miku.png', 'toastermiku');
 
 MikuZombie.TYPES = {
     gothmiku: { health: 120, speed: 20, damage: 10, cooldown: 0.9, spriteImage: SPRITE_IMAGES.gothmiku },
@@ -210,7 +214,7 @@ MikuZombie.TYPES = {
 const LEVELS = [
     {
         name: 'Level 1: Garden Beginner',
-        totalZombieCount: 20,
+        totalZombieCount: 15,
         waves: [
             { zombieCount: 6, spawnInterval: 4.0, allowedTypes: ['gothmiku'] },
             { zombieCount: 7, spawnInterval: 3.0, allowedTypes: ['gothmiku', 'lowpoly'] },
@@ -219,7 +223,7 @@ const LEVELS = [
     },
     {
         name: 'Level 2: Growing Threat',
-        totalZombieCount: 28,
+        totalZombieCount: 2,
         waves: [
             { zombieCount: 8, spawnInterval: 3.5, allowedTypes: ['gothmiku', 'lowpoly'] },
             { zombieCount: 10, spawnInterval: 2.5, allowedTypes: ['gothmiku', 'lowpoly', 'normalmiku'] },
@@ -228,7 +232,7 @@ const LEVELS = [
     },
     {
         name: 'Level 3: Invasion',
-        totalZombieCount: 35,
+        totalZombieCount: 3,
         waves: [
             { zombieCount: 10, spawnInterval: 3.2, allowedTypes: ['gothmiku', 'lowpoly', 'normalmiku'] },
             { zombieCount: 12, spawnInterval: 2.0, allowedTypes: ['gothmiku', 'lowpoly', 'normalmiku', 'retardedmiku'] },
@@ -237,7 +241,7 @@ const LEVELS = [
     },
     {
         name: 'Level 4: Onslaught',
-        totalZombieCount: 42,
+        totalZombieCount: 5,
         waves: [
             { zombieCount: 12, spawnInterval: 2.8, allowedTypes: ['gothmiku', 'lowpoly', 'normalmiku', 'retardedmiku'] },
             { zombieCount: 15, spawnInterval: 1.5, allowedTypes: ['gothmiku', 'lowpoly', 'normalmiku', 'retardedmiku', 'toastermiku'] },
@@ -246,7 +250,7 @@ const LEVELS = [
     },
     {
         name: 'Level 5: Final Stand',
-        totalZombieCount: 50,
+        totalZombieCount: 10,
         waves: [
             { zombieCount: 15, spawnInterval: 2.5, allowedTypes: ['gothmiku', 'lowpoly', 'normalmiku', 'retardedmiku', 'toastermiku'] },
             { zombieCount: 18, spawnInterval: 1.2, allowedTypes: ['gothmiku', 'lowpoly', 'normalmiku', 'retardedmiku', 'toastermiku'] },
@@ -274,7 +278,7 @@ class Game {
         // runtime counters
         this.zombiesSpawned = 0; this.zombiesAlive = 0; this.currentWaveIndex = -1; this.inWave = false; this.waveSpawnTimer = 0; this.wavePauseTimer = 0; this.wavePauseDuration = 3;
         this.showFinalWaveMsg = false; this.finalWaveMsgTimer = 0;
-        this.spawnSunTimer = 0; this.spawnSunInterval = 5; // falling sun every 5s
+        this.spawnSunTimer = 0; this.spawnSunInterval = 7; // falling sun every 5s
         this.difficultyTimer = 0; this.sun = 150; this.selectedPlant = null; this.gameOver = false; this.win = false; this.gameStarted = false;
         this.last = performance.now();
         this.initInput();
@@ -296,11 +300,11 @@ class Game {
         const waveTotal = this.levelConfig.waves.length;
         const waveNum = Math.max(1, this.currentWaveIndex + 1);
         const totalZom = this.levelConfig.totalZombieCount;
-        let el = document.getElementById('wave-number'); if(el) el.textContent = String(waveNum);
-        el = document.getElementById('wave-total'); if(el) el.textContent = String(waveTotal);
-        el = document.getElementById('zombie-spawned'); if(el) el.textContent = String(this.zombiesSpawned);
-        el = document.getElementById('zombie-total'); if(el) el.textContent = String(totalZom);
-        el = document.getElementById('level-display'); if(el) el.textContent = `${this.currentLevel + 1}/5`;
+        let el = document.getElementById('wave-number'); if (el) el.textContent = String(waveNum);
+        el = document.getElementById('wave-total'); if (el) el.textContent = String(waveTotal);
+        el = document.getElementById('zombie-spawned'); if (el) el.textContent = String(this.zombiesSpawned);
+        el = document.getElementById('zombie-total'); if (el) el.textContent = String(totalZom);
+        el = document.getElementById('level-display'); if (el) el.textContent = `${this.currentLevel + 1}/5`;
     }
     startNextWave() {
         const next = this.currentWaveIndex + 1;
@@ -419,13 +423,13 @@ class Game {
         // spawn falling suns
         this.spawnSunTimer += dt; if (this.spawnSunTimer > this.spawnSunInterval) { this.spawnSunTimer = 0; this.spawnFallingSun(); }
 
-            // final wave message timer
-            if (this.showFinalWaveMsg) {
-                this.finalWaveMsgTimer -= dt;
-                if (this.finalWaveMsgTimer <= 0) this.showFinalWaveMsg = false;
-            }
-        
-            // update plants
+        // final wave message timer
+        if (this.showFinalWaveMsg) {
+            this.finalWaveMsgTimer -= dt;
+            if (this.finalWaveMsgTimer <= 0) this.showFinalWaveMsg = false;
+        }
+
+        // update plants
         for (let r = 0; r < this.rows; r++) for (let c = 0; c < this.cols; c++) { const plant = this.grid.getPlant(r, c); if (plant) plant.update(dt, this); }
         // update projectiles
         for (const proj of this.projectiles) proj.update(dt, this);
@@ -484,13 +488,13 @@ class Game {
         else if (this.win) this.drawLevelWin();
         // final wave announcement overlay
         if (this.showFinalWaveMsg) {
-            ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0, this.height*0.35, this.width, this.height*0.3);
-            ctx.fillStyle = '#ff4444'; ctx.font = '56px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('Final Wave!', this.width/2, this.height/2 + 10);
+            ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0, this.height * 0.35, this.width, this.height * 0.3);
+            ctx.fillStyle = '#ff4444'; ctx.font = '56px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('Final Wave!', this.width / 2, this.height / 2 + 10);
             ctx.textAlign = 'start';
         }
     }
     drawLevelWin() { const ctx = this.ctx; ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(0, 0, this.width, this.height); ctx.fillStyle = '#fff'; ctx.font = '48px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('Level Complete!', this.width / 2, this.height / 2 - 20); ctx.font = '24px sans-serif'; ctx.fillText('Next level in 2 seconds...', this.width / 2, this.height / 2 + 30); ctx.textAlign = 'start'; }
-    drawFinalVictory() { const ctx = this.ctx; ctx.fillStyle = 'rgba(0,0,0,0.8)'; ctx.fillRect(0, 0, this.width, this.height); ctx.fillStyle = '#ffeb3b'; ctx.font = 'bold 64px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('🏆 YOU WIN! 🏆', this.width / 2, this.height / 2 - 60); ctx.fillStyle = '#fff'; ctx.font = '32px sans-serif'; ctx.fillText('You defeated all 5 levels!', this.width / 2, this.height / 2 + 30); ctx.font = '20px sans-serif'; ctx.fillText('Your trophy will appear here soon!', this.width / 2, this.height / 2 + 80); ctx.textAlign = 'start'; }
+    drawFinalVictory() { const ctx = this.ctx; ctx.fillStyle = 'rgba(0,0,0,0.8)'; ctx.fillRect(0, 0, this.width, this.height); ctx.fillStyle = '#ffeb3b'; ctx.font = 'bold 64px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('🏆 YOU WIN! 🏆', this.width / 2, this.height / 2 - 60); ctx.fillStyle = '#fff'; ctx.font = '32px sans-serif'; ctx.fillText('You defeated all 5 levels!', this.width / 2, this.height / 2 + 30); ctx.font = '20px sans-serif'; ctx.fillText('Your brains did not get eaten good job thanks for playing', this.width / 2, this.height / 2 + 80); ctx.textAlign = 'start'; }
     drawGameOver() { const ctx = this.ctx; ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(0, 0, this.width, this.height); ctx.fillStyle = '#fff'; ctx.font = '48px sans-serif'; ctx.fillText('Game Over', this.width / 2 - 120, this.height / 2); }
 }
 
@@ -499,16 +503,16 @@ window.addEventListener('load', () => {
     const canvas = document.getElementById('game-canvas');
     const startBtn = document.getElementById('start-btn');
     const startOverlay = document.getElementById('start-overlay');
-    
+
     // ensure canvas matches layout and notify game on resize
     let game = null;
-    function resize() { 
-        canvas.width = canvas.clientWidth; 
-        canvas.height = canvas.clientHeight; 
+    function resize() {
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
         if (game && typeof game.resize === 'function') game.resize();
     }
     window.addEventListener('resize', resize);
-    
+
     game = new Game(canvas);
     resize();
 

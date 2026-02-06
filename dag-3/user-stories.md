@@ -50,7 +50,6 @@ Als **speler** wil ik een level kunnen winnen zodat ik naar het volgende level k
 - De win-voorwaarde is duidelijk (bijv. alle vijanden verslaan)
 - Na het winnen verschijnt een "Level Complete" scherm
 - Ik krijg feedback (score, sterren, behaalde objectives)
-- Er is een knop om naar het volgende level te gaan
 - Mijn voortgang wordt bijgehouden
 
 ---

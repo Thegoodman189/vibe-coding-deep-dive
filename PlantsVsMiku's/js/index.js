@@ -13,7 +13,7 @@ function loadAudioSettings() {
         const m = localStorage.getItem('pvsm_muted');
         if (v !== null) bgAudio.volume = Math.min(1, Math.max(0, Number(v)));
         if (m !== null) bgAudio.muted = m === '1' || m === 'true';
-    } catch (e) {}
+    } catch (e) { }
 }
 
 loadAudioSettings();
@@ -21,7 +21,7 @@ loadAudioSettings();
 // Try to play; if blocked, wait for first user interaction
 bgAudio.play().catch(() => {
     const startOnUser = () => {
-        bgAudio.play().catch(() => {});
+        bgAudio.play().catch(() => { });
         document.removeEventListener('click', startOnUser);
     };
     document.addEventListener('click', startOnUser);
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     playBtn.addEventListener('click', () => {
         // stop menu music before navigating to the game in the same tab
-        try { bgAudio.pause(); bgAudio.currentTime = 0; } catch (e) {}
+        try { bgAudio.pause(); bgAudio.currentTime = 0; } catch (e) { }
         window.location.href = 'game.html';
     });
 
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!modal) return;
         modal.classList.remove('open');
         modal.setAttribute('aria-hidden', 'true');
-        try { lastFocus && lastFocus.focus(); } catch (e) {}
+        try { lastFocus && lastFocus.focus(); } catch (e) { }
     }
 
     optionsBtn.addEventListener('click', (e) => {
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
             bgAudio.muted = muted;
             localStorage.setItem('pvsm_volume', String(bgAudio.volume));
             localStorage.setItem('pvsm_muted', muted ? '1' : '0');
-        } catch (e) {}
+        } catch (e) { }
         closeModal();
     });
 
@@ -116,18 +116,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 // ignore
             }
             // Attempt to close the game tab from here as well
-            try { gameWindow.close(); } catch (e) {}
+            try { gameWindow.close(); } catch (e) { }
         }
 
         // Attempt to close the main menu tab (may be blocked by browser but we try)
         try {
             window.open('', '_self');
             window.close();
-        } catch (e) {}
+        } catch (e) { }
 
         // Final fallback: send a delayed close in case the other attempts need time
         setTimeout(() => {
-            try { window.close(); } catch (e) {}
+            try { window.close(); } catch (e) { }
         }, 300);
     });
 });
