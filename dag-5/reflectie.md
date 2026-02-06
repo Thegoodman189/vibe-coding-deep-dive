@@ -3,7 +3,7 @@
 Github Copilot.
 
 - Waar maakte AI je sneller?
-De game logieka maken.
+De game logieka zoals hoe de zombies reageeren op planten maken.
 
 - Waar ging AI de mist in?
 De styling en animation.
@@ -15,7 +15,7 @@ Bij de styling en animation.
 Ja voor gamelogieka maar niet voor iets anders.
 
 - Wat zie jij als voordelen van AI voor developers?
-Lange tasks zaols de logieka van een game maken kan veel sneller met de hulp van AI dus zulke tasks zijn voor een ai goed om te maken.
+Lange tasks zoals de logieka van een game maken kan veel sneller met de hulp van AI dus zulke tasks zijn voor een AI goed om te maken.
 
 - Wat zie jij als risico’s?
-Dat mensen voral jongere developers AI alleen maar gaan gebruiken en dus eigelijk niks van de code af weten en dan ook later dat ze dan ziet zonder ai kinnen omdat ze anders niks kunnen in software development.
+Dat mensen vooral jongere developers AI alleen maar gaan gebruiken en dus eigelijk niks van de code af weten en dan ook later dat ze dan ziet zonder AI kunnen omdat ze niks weten in software development.
